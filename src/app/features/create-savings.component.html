@@ -1,0 +1,273 @@
+<!-- Wizard para crear cuenta de ahorros -->
+<div class="create-savings-container">
+  <div class="form-header">
+    <h2>Crear Cuenta de Ahorros</h2>
+    <div class="progress-bar">
+      <div
+        class="progress-step"
+        [class.active]="currentStep >= 1"
+        [class.completed]="currentStep > 1"
+      >
+        <div class="step-number">1</div>
+        <div class="step-label">Personal</div>
+      </div>
+      <div
+        class="progress-step"
+        [class.active]="currentStep >= 2"
+        [class.completed]="currentStep > 2"
+      >
+        <div class="step-number">2</div>
+        <div class="step-label">Contacto</div>
+      </div>
+      <div
+        class="progress-step"
+        [class.active]="currentStep >= 3"
+        [class.completed]="currentStep > 3"
+      >
+        <div class="step-number">3</div>
+        <div class="step-label">Depósito</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paso 1: Información Personal -->
+  <form
+    *ngIf="currentStep === 1"
+    [formGroup]="form"
+    (ngSubmit)="nextStep()"
+    class="form-step step-1"
+  >
+    <div class="step-content">
+      <h3>{{ getStepTitle(1) }}</h3>
+      <p class="step-description">{{ getStepDescription(1) }}</p>
+      <div class="form-group">
+        <label for="titularName">Nombre Completo del Titular *</label>
+        <input
+          id="titularName"
+          type="text"
+          formControlName="titularName"
+          class="form-control"
+          placeholder="Ingrese su nombre completo"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="identificationType">Tipo de Identificación *</label>
+        <select
+          id="identificationType"
+          formControlName="identificationType"
+          class="form-control"
+          required
+        >
+          <option value="">Seleccione un tipo</option>
+          <option *ngFor="let type of identificationTypes" [value]="type.value">
+            {{ type.label }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="identificationNumber">Número de Identificación *</label>
+        <input
+          id="identificationNumber"
+          type="text"
+          formControlName="identificationNumber"
+          class="form-control"
+          placeholder="Ingrese su número de identificación"
+          required
+        />
+      </div>
+    </div>
+    <div class="form-actions">
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        [disabled]="!isStepValid(1)"
+      >
+        Siguiente
+      </button>
+    </div>
+  </form>
+
+  <!-- Paso 2: Datos de Contacto -->
+  <form
+    *ngIf="currentStep === 2"
+    [formGroup]="form"
+    (ngSubmit)="nextStep()"
+    class="form-step step-2"
+  >
+    <div class="step-content">
+      <h3>{{ getStepTitle(2) }}</h3>
+      <p class="step-description">{{ getStepDescription(2) }}</p>
+      <div class="form-group">
+        <label for="phoneNumber">Número de Teléfono *</label>
+        <input
+          id="phoneNumber"
+          type="tel"
+          formControlName="phoneNumber"
+          class="form-control"
+          placeholder="Ingrese su número de teléfono"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="address">Dirección *</label>
+        <textarea
+          id="address"
+          formControlName="address"
+          class="form-control"
+          placeholder="Ingrese su dirección completa"
+          rows="4"
+          required
+        ></textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" (click)="prevStep()">
+        Anterior
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="!isStepValid(2)"
+      >
+        Siguiente
+      </button>
+    </div>
+  </form>
+
+  <!-- Paso 3: Depósito Inicial -->
+  <form
+    *ngIf="currentStep === 3"
+    [formGroup]="form"
+    (ngSubmit)="submitForm()"
+    class="form-step step-3"
+  >
+    <div class="step-content">
+      <h3>{{ getStepTitle(3) }}</h3>
+      <p class="step-description">{{ getStepDescription(3) }}</p>
+      <div class="form-group">
+        <label for="initialDeposit">Monto del Depósito Inicial *</label>
+        <div class="input-group">
+          <span class="input-prefix">$</span>
+          <input
+            id="initialDeposit"
+            type="number"
+            formControlName="initialDeposit"
+            class="form-control"
+            placeholder="0.00"
+            min="0"
+            step="0.01"
+            required
+          />
+        </div>
+        <small class="form-text">Monto mínimo: $0.01</small>
+      </div>
+      <div class="form-summary">
+        <h4>Resumen de la Cuenta</h4>
+        <div class="summary-item">
+          <span class="label">Titular:</span>
+          <span class="value">{{ form.value.titularName }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Identificación:</span>
+          <span class="value"
+            >{{ form.value.identificationType }} -
+            {{ form.value.identificationNumber }}</span
+          >
+        </div>
+        <div class="summary-item">
+          <span class="label">Teléfono:</span>
+          <span class="value">{{ form.value.phoneNumber }}</span>
+        </div>
+        <div class="summary-item">
+          <span class="label">Dirección:</span>
+          <span class="value">{{ form.value.address }}</span>
+        </div>
+        <div class="summary-item highlight">
+          <span class="label">Depósito Inicial:</span>
+          <span class="value"
+            >${{ form.value.initialDeposit | number : "1.2-2" }}</span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary" (click)="prevStep()">
+        Anterior
+      </button>
+      <button
+        type="submit"
+        class="btn btn-success"
+        [disabled]="!isStepValid(3) || isLoading"
+      >
+        Crear Cuenta
+      </button>
+    </div>
+  </form>
+
+  <!-- Pantalla de Éxito -->
+  <div *ngIf="currentStep === 4" class="form-step success-step">
+    <div class="step-content">
+      <div class="success-icon"><i class="checkmark">&#10003;</i></div>
+      <h3>¡Cuenta Creada Exitosamente!</h3>
+      <p class="success-message">
+        Su cuenta de ahorros ha sido creada correctamente.
+      </p>
+      <div class="account-info" *ngIf="createdAccount">
+        <h4>Información de la Cuenta</h4>
+        <div class="info-item">
+          <span class="label">Número de Cuenta:</span>
+          <span class="value account-number">{{
+            createdAccount.accountNumber
+          }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Titular:</span>
+          <span class="value">{{ createdAccount.titularName }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Depósito Inicial:</span>
+          <span class="value"
+            >${{ createdAccount.initialDeposit | number : "1.2-2" }}</span
+          >
+        </div>
+        <div class="info-item">
+          <span class="label">Estado:</span>
+          <span class="value status-active">{{ createdAccount.status }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Fecha de Creación:</span>
+          <span class="value">{{
+            createdAccount.createdAt | date : "dd/MM/yyyy HH:mm"
+          }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="createAnotherAccount()"
+      >
+        Crear Otra Cuenta
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="goToUserDashboard()"
+      >
+        Ir al Dashboard
+      </button>
+    </div>
+  </div>
+
+  <!-- Mensajes de Error -->
+  <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+  <div class="alert alert-success" *ngIf="success && currentStep === 4">
+    ¡Cuenta creada correctamente!
+  </div>
+  <div class="loading-container" *ngIf="isLoading">
+    <div class="spinner"></div>
+    Procesando...
+  </div>
+</div>

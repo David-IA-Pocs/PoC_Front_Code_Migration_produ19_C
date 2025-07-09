@@ -1,0 +1,213 @@
+<div class="login-container">
+  <!-- Lado izquierdo - Formulario -->
+  <div class="login-left">
+    <div class="login-card">
+      <!-- Header con logo -->
+      <div class="login-header">
+        <div class="produbanco-logo">
+          <img
+            src="assets/image.png"
+            alt="Logo de Produbanco"
+            style="width: 140px; height: auto; max-height: 50px"
+          />
+        </div>
+        <h1 class="login-title">Hola, te damos la bienvenida</h1>
+        <p class="login-subtitle">Ingresa a tu Produbanco en línea</p>
+      </div>
+
+      <!-- Cuerpo del formulario -->
+      <div class="login-body">
+        <!-- Mensaje de error -->
+        <div class="message message-error" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Formulario completo (siempre presente, pero con partes ocultas) -->
+        <form
+          [formGroup]="loginForm"
+          (ngSubmit)="onSubmit()"
+          autocomplete="off"
+        >
+          <!-- Paso 1: Usuario -->
+          <div *ngIf="currentStep === 'username'">
+            <!-- Campo Usuario -->
+            <div
+              class="form-group"
+              [ngClass]="{
+                'has-error':
+                  loginForm.get('username')?.invalid &&
+                  loginForm.get('username')?.touched
+              }"
+            >
+              <label for="username" class="form-label">Usuario</label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                class="form-control"
+                formControlName="username"
+                (focus)="clearError()"
+                placeholder="Ingresa tu nombre de usuario"
+                required
+                minlength="3"
+                autocomplete="username"
+              />
+              <span
+                class="error-text"
+                *ngIf="
+                  loginForm.get('username')?.invalid &&
+                  loginForm.get('username')?.touched
+                "
+              >
+                <span *ngIf="loginForm.get('username')?.errors?.['required']"
+                  >El usuario es requerido</span
+                >
+                <span *ngIf="loginForm.get('username')?.errors?.['minlength']"
+                  >El usuario debe tener al menos 3 caracteres</span
+                >
+              </span>
+            </div>
+
+            <!-- Botón de continuar -->
+            <button
+              type="button"
+              class="btn btn-primary"
+              [disabled]="loginForm.get('username')?.invalid"
+              (click)="continueToPassword()"
+            >
+              Continuar
+            </button>
+          </div>
+
+          <!-- Paso 2: Contraseña -->
+          <div *ngIf="currentStep === 'password'">
+            <!-- Mostrar usuario seleccionado -->
+            <div
+              style="
+                background-color: var(--gris-claro);
+                padding: 1rem;
+                border-radius: 4px;
+                margin-bottom: 1.5rem;
+                border: 1px solid var(--gris-borde);
+              "
+            >
+              <div
+                style="
+                  font-size: 0.875rem;
+                  color: var(--gris-texto);
+                  margin-bottom: 0.25rem;
+                "
+              >
+                Usuario:
+              </div>
+              <div style="font-weight: 600; color: var(--negro-texto)">
+                {{ loginForm.get("username")?.value }}
+              </div>
+              <button
+                type="button"
+                class="btn-link"
+                (click)="goBack()"
+                style="font-size: 0.75rem; margin-top: 0.5rem"
+              >
+                Cambiar usuario
+              </button>
+            </div>
+
+            <!-- Campo Contraseña (oculto en el paso 1) -->
+            <div
+              class="form-group"
+              [ngClass]="{
+                'has-error':
+                  loginForm.get('password')?.invalid &&
+                  loginForm.get('password')?.touched
+              }"
+            >
+              <label for="password" class="form-label">Contraseña</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-control"
+                formControlName="password"
+                (focus)="clearError()"
+                placeholder="Ingresa tu contraseña"
+                required
+                minlength="3"
+                autocomplete="current-password"
+              />
+              <span
+                class="error-text"
+                *ngIf="
+                  loginForm.get('password')?.invalid &&
+                  loginForm.get('password')?.touched
+                "
+              >
+                <span *ngIf="loginForm.get('password')?.errors?.['required']"
+                  >La contraseña es requerida</span
+                >
+                <span *ngIf="loginForm.get('password')?.errors?.['minlength']"
+                  >La contraseña debe tener al menos 3 caracteres</span
+                >
+              </span>
+            </div>
+
+            <!-- Botón de iniciar sesión -->
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="isLoading || loginForm.get('password')?.invalid"
+              [ngClass]="{ loading: isLoading }"
+            >
+              <span *ngIf="!isLoading">Iniciar sesión</span>
+              <span *ngIf="isLoading">
+                <span class="spinner"></span>
+                Iniciando sesión...
+              </span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Enlaces adicionales - Solo mostrar en el primer paso -->
+        <div class="login-links" *ngIf="currentStep === 'username'">
+          <a href="#" class="forgot-link"
+            >¿Olvidaste tu usuario o quieres desbloquearlo?</a
+          >
+          <div class="first-time-section">
+            <div class="first-time-title">
+              ¿Eres cliente y es la primera vez que ingresas?
+            </div>
+            <button type="button" class="btn btn-secondary">Regístrate</button>
+          </div>
+          <div class="support-section">
+            <div class="support-text">
+              Si tienes problemas para ingresar, comunícate al:
+            </div>
+            <div class="support-phone">02 400 9000</div>
+          </div>
+        </div>
+
+        <!-- Enlaces para el paso de contraseña -->
+        <div class="login-links" *ngIf="currentStep === 'password'">
+          <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
+          <div class="support-section">
+            <div class="support-text">
+              Si tienes problemas para ingresar, comunícate al:
+            </div>
+            <div class="support-phone">02 400 9000</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lado derecho - Visual/Branding -->
+  <div class="login-right">
+    <div class="visual-elements">
+      <h2>Tu banco digital</h2>
+      <p>
+        Accede a todos nuestros servicios bancarios de forma segura y
+        conveniente, desde cualquier lugar y en cualquier momento.
+      </p>
+    </div>
+  </div>
+</div>

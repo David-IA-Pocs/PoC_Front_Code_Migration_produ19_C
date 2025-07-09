@@ -1,0 +1,44 @@
+/* Estilos personalizados para la vista de administración. Puedes personalizar según sea necesario. */
+
+:host {
+  display: block;
+}
+
+.card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  background: var(--blanco);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem auto;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.info-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.info-label {
+  font-weight: 600;
+  color: var(--gris-texto);
+  min-width: 120px;
+}
+
+.info-value {
+  color: var(--negro-texto);
+}
+
+/* Puedes agregar más estilos según lo requiera la UI */

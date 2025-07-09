@@ -1,0 +1,148 @@
+.create-savings-container {
+  max-width: 500px;
+  margin: 2rem auto;
+  background: var(--blanco);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  padding: 2rem;
+}
+.form-header {
+  margin-bottom: 2rem;
+}
+.progress-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+.progress-step .step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--gris-claro);
+  color: var(--gris-texto);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  border: 2px solid var(--gris-borde);
+  transition: background 0.2s, color 0.2s;
+}
+.progress-step.active .step-number {
+  background: var(--verde-produbanco);
+  color: var(--blanco);
+  border-color: var(--verde-produbanco);
+}
+.progress-step.completed .step-number {
+  background: var(--verde-claro);
+  color: var(--verde-oscuro);
+  border-color: var(--verde-claro);
+}
+.progress-step .step-label {
+  font-size: 0.85rem;
+  color: var(--gris-texto);
+}
+.form-step {
+  margin-bottom: 2rem;
+}
+.form-group {
+  margin-bottom: 1.5rem;
+}
+.input-group {
+  display: flex;
+  align-items: center;
+}
+.input-prefix {
+  background: var(--gris-claro);
+  padding: 0.5rem 1rem;
+  border-radius: 4px 0 0 4px;
+  border: 1px solid var(--gris-borde);
+  border-right: none;
+}
+input.form-control,
+textarea.form-control,
+select.form-control {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--gris-borde);
+  border-radius: 4px;
+  font-size: 1rem;
+}
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+.form-summary {
+  background: var(--gris-claro);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+}
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.summary-item.highlight {
+  font-weight: bold;
+  color: var(--verde-produbanco);
+}
+.success-step {
+  text-align: center;
+}
+.success-icon {
+  font-size: 2.5rem;
+  color: var(--verde-produbanco);
+  margin-bottom: 1rem;
+}
+.account-info {
+  margin-top: 1.5rem;
+  text-align: left;
+}
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.account-number {
+  font-weight: bold;
+  color: var(--verde-produbanco);
+}
+.status-active {
+  color: var(--verde-produbanco);
+  font-weight: bold;
+}
+.alert {
+  margin-top: 1rem;
+}
+.loading-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--gris-borde);
+  border-top: 3px solid var(--verde-produbanco);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
